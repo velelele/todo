@@ -33,19 +33,17 @@ const EditButton = styled.button`
   padding: 5px 10px;
 `;
 
-const EditTask = (props) => {
+const EditTask = ({ taskId, close }) => {
     const queryClient = useQueryClient();
     const [editedText, setEditedText] = useState('');
-    const contentComponentClickHandle = (event) => {
-        event.stopPropagation();
-    };
+
     useEffect(() => {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        const selectedTask = tasks.find((task) => task.id === props.taskId);
+        const selectedTask = tasks.find((task) => task.id === taskId);
         if (selectedTask) {
             setEditedText(selectedTask.text);
         }
-    }, [props.taskId]);
+    }, [taskId]);
 
     const handleInputChange = (event) => {
         setEditedText(event.target.value);
@@ -65,23 +63,21 @@ const EditTask = (props) => {
     });
 
     const handleSaveClick = () => {
-        mutationUpdateText.mutate({ taskId: props.taskId, newText: editedText });
-        props.close();
+        mutationUpdateText.mutate({ taskId, newText: editedText });
+        close();
     };
 
     return (
-        <Backdrop onClick={props.close}>
-            <Content onClick={contentComponentClickHandle}>
+        <Backdrop onClick={(event) => { event.stopPropagation(); close(); }}>
+            <Content onClick={(event) => event.stopPropagation()}>
                 <p style={{ textAlign: 'center' }}>Редактирование задачи</p>
                 <input
-
                     type="text"
                     value={editedText}
                     onChange={handleInputChange}
                     placeholder="Введите новый текст задачи"
                 />
                 <EditButton onClick={handleSaveClick}>Сохранить изменения</EditButton>
-
             </Content>
         </Backdrop>
     );

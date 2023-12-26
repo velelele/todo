@@ -21,12 +21,14 @@ const Container = styled.div`
 const TaskItem = styled.li`
   display: flex;
   width: 796px;
-  padding: 16px;
+  padding: 24px;
   justify-content: space-between;
   align-items: center;
   border-radius: 16px;
   background: var(----inputBg_task, #111827);
   margin-bottom: 24px;
+  overflow: hidden;
+  height: auto;
 `;
 
 const TaskText = styled.span`
@@ -36,6 +38,11 @@ const TaskText = styled.span`
   font-style: normal;
   font-weight: 700;
   line-height: 32px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 10px;
 `;
 
 const Checkbox = styled.input`
@@ -81,6 +88,8 @@ const EditButton = styled.button`
   -webkit-text-fill-color: transparent;
   outline: none;
   border: 0;
+  flex-shrink: 0; /* Prevent button from shrinking */
+  margin-left: 10px; /* Add some space between text and buttons */
 `;
 
 const DeleteButton = styled.button`
@@ -94,6 +103,8 @@ const DeleteButton = styled.button`
   outline: none;
   border: 0;
   background: transparent;
+  flex-shrink: 0; /* Prevent button from shrinking */
+  margin-left: 10px; /* Add some space between buttons */
 `;
 
 const SearchInput = styled.input`
@@ -120,7 +131,6 @@ const updateTaskStatus = async ({ taskId, completed }) => {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     return updatedTasks;
 };
-
 
 export const TasksList = () => {
     const queryClient = useQueryClient();
@@ -195,7 +205,6 @@ export const TasksList = () => {
                     onChange={handleSearchInputChange}
                     placeholder="Поиск задач..."
                 />
-
                 <ul>
                     {filteredTasks.map((task) => (
                         <TaskItem key={task.id}>

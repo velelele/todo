@@ -41,20 +41,14 @@ const DeleteButton = styled.button`
 
 const EditTask = (props) => {
     const queryClient = useQueryClient();
+
     const contentComponentClickHandle = (event) => {
         event.stopPropagation();
     };
 
-    // Загружаем текст выбранной задачи в инпут при монтировании компонента
-    useEffect(() => {
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        tasks.find((task) => task.id === props.taskId);
-    }, [props.taskId]);
-
-
-    const mutationDelete = useMutation(async (taskId) => {
+    const mutationDelete = useMutation(async () => {
         const existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        const updatedTasks = existingTasks.filter((task) => task.id !== taskId);
+        const updatedTasks = existingTasks.filter((task) => task.id !== props.taskId);
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         return updatedTasks;
     }, {
@@ -65,14 +59,14 @@ const EditTask = (props) => {
     });
 
     const handleDeleteClick = () => {
-        mutationDelete.mutate(props.taskId);
+        mutationDelete.mutate();
     };
 
     return (
         <Backdrop onClick={props.close}>
             <Content onClick={contentComponentClickHandle}>
-                <p style={{ textAlign: 'center' }}>Вы уверены что хотите удалить задачу?</p>
-                <DeleteButton onClick={() => handleDeleteClick()}>Удалить</DeleteButton>
+                <p style={{ textAlign: 'center' }}>Вы уверены, что хотите удалить задачу?</p>
+                <DeleteButton onClick={handleDeleteClick}>Удалить</DeleteButton>
             </Content>
         </Backdrop>
     );

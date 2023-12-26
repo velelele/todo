@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import SaveTask from "./SaveTask";
+import SaveTask, {device} from "./SaveTask";
 
 const AddTaskContainer = styled.div`
   padding: 20px 50px;
@@ -26,7 +26,6 @@ const AddTaskButton = styled.button`
   position: absolute;
   margin-left: 1100px;
   margin-top: 175px;
-  
 
   &:hover {
     background-color: #45a049;
