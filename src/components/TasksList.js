@@ -204,8 +204,6 @@ export const TasksList = () => {
                     value={searchValue}
                     onChange={handleSearchInputChange}
                     placeholder="Поиск задач..."
-
-
                 />
                 <ul>
                     {filteredTasks.map((task) => (
